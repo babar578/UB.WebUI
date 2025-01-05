@@ -1,0 +1,17 @@
+﻿@using UB.DLL.Model;
+@model Mdl_Config_Product
+
+<h2>Delete Product</h2>
+
+<p>Are you sure you want to delete the following product?</p>
+<div>
+    <p><strong>Product Name:</strong> @Model.Name</p>
+    <p><strong>Description:</strong> @Model.Description</p>
+    <p><strong>Price:</strong> @Model.Price</p>
+</div>
+
+<form method="post" asp-action="DeleteConfirmed">
+    <input type="hidden" name="id" value="@Model.ProductId" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a class="btn btn-secondary" href="/Setup_Product">Cancel</a>
+</form>

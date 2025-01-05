@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UB.WebUI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/UB.WebUI.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar .nav-link {
+            color: #adb5bd;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #ffffff;
+            background-color: #495057;
+        }
+
+        .content {
+            margin-left: 250px;
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: calc(100% - 250px);
+            margin-left: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="navbar-brand p-3">
+            <a href="#" class="text-white text-decoration-none">UB.WebUI</a>
+        </div>
+        <nav class="nav flex-column">
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link" asp-area="" asp-controller="Setup_Product" asp-action="Index">Product</a>
+            <a class="nav-link" asp-area="" asp-controller="Invoice" asp-action="Index">Invoice</a>
+            <a class="nav-link" href="#">Advanced Theme</a>
+        </nav>
+    </div>
+
+    <div class="content">
+        <header>
+            <h1>@ViewData["Title"]</h1>
+        </header>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2025 - UB.WebUI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,34 @@
+﻿@using UB.DLL.Model;
+@model IEnumerable<Mdl_Config_Product>
+
+<h2>Product List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.ProductId</td>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Price</td>
+                <td>
+                    <a class="btn btn-primary" href="/Setup_Product/Edit/@product.ProductId">Edit</a>
+                    <a class="btn btn-danger" href="/Setup_Product/Delete/@product.ProductId">Delete</a>
+                    <a class="btn btn-info" href="/Setup_Product/Details/@product.ProductId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-success" href="/Setup_Product/Create">Add New Product</a>

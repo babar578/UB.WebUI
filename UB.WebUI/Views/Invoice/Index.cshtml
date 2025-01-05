@@ -1,0 +1,47 @@
+﻿@using UB.DLL.Model;
+@model IEnumerable<Mdl_Inv_InvoiceHead>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>Invoices</h3>
+        <a href="@Url.Action("Create", "Invoice")" class="btn btn-primary">Add New Invoice</a>
+    </div>
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="thead-dark">
+            <tr>
+                <th>Invoice ID</th>
+                <th>Customer Name</th>
+                <th>Invoice Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var invoice in Model)
+                {
+                    <tr>
+                        <td>@invoice.InvoiceId</td>
+                        <td>@invoice.CustomerName</td>
+                        <td>@invoice.InvoiceDate.ToString("dd-MMM-yyyy")</td>
+                        <td>
+                            <a href="@Url.Action("Details", "Invoice", new { id = invoice.InvoiceId })" class="btn btn-info btn-sm">View</a>
+                            <a href="@Url.Action("EditDetail", "Invoice", new { id = invoice.InvoiceId })" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="@Url.Action("Delete", "Invoice", new { id = invoice.InvoiceId })" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No invoices available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
