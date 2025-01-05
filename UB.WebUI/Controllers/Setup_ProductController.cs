@@ -48,7 +48,7 @@ namespace UB.WebUI.Controllers
             {
                 return NotFound();
             }
-            return View(product); // Corresponds to Edit.cshtml
+            return View(product); 
         }
 
         // POST: /Product/Edit/5

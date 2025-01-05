@@ -1,34 +1,71 @@
 ﻿@using UB.DLL.Model;
 @model IEnumerable<Mdl_Config_Product>
 
-<h2>Product List</h2>
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">Product List</h2>
+        <a class="btn btn-success" href="/Setup_Product/Create">
+            <i class="bi bi-plus-circle"></i> Add New Product
+        </a>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.ProductId</td>
-                <td>@product.Name</td>
-                <td>@product.Description</td>
-                <td>@product.Price</td>
-                <td>
-                    <a class="btn btn-primary" href="/Setup_Product/Edit/@product.ProductId">Edit</a>
-                    <a class="btn btn-danger" href="/Setup_Product/Delete/@product.ProductId">Delete</a>
-                    <a class="btn btn-info" href="/Setup_Product/Details/@product.ProductId">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var product in Model)
+                    {
+                        <tr>
+                            <td>@product.ProductId</td>
+                            <td>@product.Name</td>
+                            <td>@product.Description</td>
+                            <td>@product.Price.ToString("C")</td>
+                            <td class="text-center">
+                                <a class="btn btn-info btn-sm me-1" href="/Setup_Product/Details/@product.ProductId"
+                                   data-bs-toggle="tooltip" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a class="btn btn-warning btn-sm me-1" href="/Setup_Product/Edit/@product.ProductId"
+                                   data-bs-toggle="tooltip" title="Edit Product">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="/Setup_Product/Delete/@product.ProductId" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip"
+                                            title="Delete Product" onclick="return confirm('Are you sure you want to delete this product?');">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No products available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<a class="btn btn-success" href="/Setup_Product/Create">Add New Product</a>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>

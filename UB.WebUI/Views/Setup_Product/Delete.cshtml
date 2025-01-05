@@ -1,17 +1,28 @@
 ﻿@using UB.DLL.Model;
 @model Mdl_Config_Product
 
-<h2>Delete Product</h2>
+<div class="container my-4">
+    <h2 class="fw-bold">Delete Product</h2>
 
-<p>Are you sure you want to delete the following product?</p>
-<div>
-    <p><strong>Product Name:</strong> @Model.Name</p>
-    <p><strong>Description:</strong> @Model.Description</p>
-    <p><strong>Price:</strong> @Model.Price</p>
+    <p>Are you sure you want to delete the following product? This action cannot be undone.</p>
+
+    <!-- Product Details -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <p><strong>Product Name:</strong> @Model.Name</p>
+            <p><strong>Description:</strong> @Model.Description</p>
+            <p><strong>Price:</strong> @Model.Price.ToString("C")</p>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Form -->
+    <form method="post" asp-action="DeleteConfirmed">
+        <input type="hidden" name="id" value="@Model.ProductId" />
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a class="btn btn-secondary" href="/Setup_Product">Cancel</a>
+        </div>
+    </form>
 </div>
-
-<form method="post" asp-action="DeleteConfirmed">
-    <input type="hidden" name="id" value="@Model.ProductId" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a class="btn btn-secondary" href="/Setup_Product">Cancel</a>
-</form>

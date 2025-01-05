@@ -5,22 +5,20 @@
 
 <div class="container mt-4">
     <div class="row">
-       
         <div class="col-md-4">
             <div class="card text-white bg-primary mb-3">
                 <div class="card-header">Total Invoices</div>
                 <div class="card-body">
-                    <h5 class="card-title">@ViewData["TotalInvoices"]</h5>
+                    <h5 class="card-title">@ViewData["TotalInvoices"] ?? 0</h5>
                 </div>
             </div>
         </div>
 
-    
         <div class="col-md-4">
             <div class="card text-white bg-success mb-3">
                 <div class="card-header">Total Payments</div>
                 <div class="card-body">
-                    <h5 class="card-title">PKR @ViewData["TotalPayments"]</h5>
+                    <h5 class="card-title">PKR @ViewData["TotalPayments"] ?? 0</h5>
                 </div>
             </div>
         </div>
@@ -36,7 +34,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    fetch('https://localhost:7299/Home/Dashboard') 
+    fetch('https://localhost:7299/Home/Dashboard')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -44,9 +42,12 @@
             return response.json();
         })
         .then(data => {
-            console.log(data); 
+            if (!Array.isArray(data) || data.length === 0) {
+                throw new Error('Invalid or empty data received');
+            }
+
             const labels = data.map(item => item.month);
-            const payments = data.map(item => item.payment); 
+            const payments = data.map(item => item.payment);
 
             // Render Chart
             const ctx = document.getElementById('paymentChart').getContext('2d');
@@ -68,9 +69,23 @@
                         y: {
                             beginAtZero: true
                         }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return 'PKR ' + tooltipItem.raw;
+                                }
+                            }
+                        }
                     }
                 }
             });
         })
-        .catch(error => console.error('Error fetching graph data:', error));
+        .catch(error => {
+            console.error('Error fetching or processing graph data:', error);
+        });
 </script>

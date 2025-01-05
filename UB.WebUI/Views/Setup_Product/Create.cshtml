@@ -1,21 +1,35 @@
 ﻿@using UB.DLL.Model;
 @model Mdl_Config_Product
 
-<h2>Create Product</h2>
+<div class="container my-4">
+    <h2 class="fw-bold">Create Product</h2>
 
-<form method="post">
-    <div class="form-group">
-        <label for="Name">Name</label>
-        <input type="text" class="form-control" id="Name" name="Name" value="@Model?.Name" required />
-    </div>
-    <div class="form-group">
-        <label for="Description">Description</label>
-        <input type="text" class="form-control" id="Description" name="Description" value="@Model?.Description" />
-    </div>
-    <div class="form-group">
-        <label for="Price">Price</label>
-        <input type="number" step="0.01" class="form-control" id="Price" name="Price" value="@Model?.Price" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a class="btn btn-secondary" href="/Product">Cancel</a>
-</form>
+    <form method="post">
+        <!-- Product Name -->
+        <div class="mb-3">
+            <label for="Name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model?.Name" required />
+            <div class="form-text">Enter the name of the product.</div>
+        </div>
+
+        <!-- Product Description -->
+        <div class="mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="Description" name="Description" value="@Model?.Description" />
+            <div class="form-text">Provide a brief description of the product (optional).</div>
+        </div>
+
+        <!-- Product Price -->
+        <div class="mb-3">
+            <label for="Price" class="form-label">Price</label>
+            <input type="number" class="form-control" id="Price" name="Price" value="@Model?.Price" step="0.01" required />
+            <div class="form-text">Enter the product price.</div>
+        </div>
+
+        <!-- Submit and Cancel Buttons -->
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-secondary" href="/Product">Cancel</a>
+        </div>
+    </form>
+</div>

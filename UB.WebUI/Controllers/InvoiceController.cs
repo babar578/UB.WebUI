@@ -121,48 +121,6 @@ namespace UB.Web.Controllers
 
 
      
-
-
-        // GET: Invoice/Edit/5
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var invoice = await _invoiceService.GetByIdAsync(id);
-        //    if (invoice == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(invoice);
-        //}
-
-        //// POST: Invoice/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("InvoiceId,CustomerName,InvoiceDate")] Mdl_Inv_InvoiceHead invoice)
-        //{
-        //    if (id != invoice.InvoiceId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            await _invoiceService.UpdateAsync(invoice);
-        //        }
-        //        catch (Exception)
-        //        {
-        //            if (await _invoiceService.GetByIdAsync(id) == null)
-        //            {
-        //                return NotFound();
-        //            }
-        //            throw;
-        //        }
-        //        return RedirectToAction(nameof(Details), new { id });
-        //    }
-        //    return View(invoice);
-        //}
-
         // GET: Invoice/Delete/5
         public async Task<IActionResult> Delete(int id)
         {

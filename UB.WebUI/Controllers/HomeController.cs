@@ -11,8 +11,8 @@ namespace UB.WebUI.Controllers
         public IActionResult Index()
         {
             // Pass the required ViewData for cards
-            ViewData["TotalInvoices"] = 150;
-            ViewData["TotalPayments"] = 120000;
+            ViewData["TotalInvoices"] = 22;
+            ViewData["TotalPayments"] = 1223;
 
             return View();
         }
@@ -24,10 +24,10 @@ namespace UB.WebUI.Controllers
             var graphData = new List<object>
         {
             new { Month = "January", Payment = 20000 },
-            new { Month = "February", Payment = 18000 },
-            new { Month = "March", Payment = 22000 },
-            new { Month = "April", Payment = 25000 },
-            new { Month = "May", Payment = 30000 }
+            new { Month = "February", Payment = 0 },
+            new { Month = "March", Payment = 0 },
+            new { Month = "April", Payment = 0 },
+            new { Month = "May", Payment = 0 }
         };
 
             return Json(graphData);

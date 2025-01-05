@@ -1,10 +1,10 @@
 ﻿@using UB.DLL.Model;
 @model InvoiceDetailViewModel
 
-<div class="container mt-4">
+<div class="container my-4">
     <!-- Invoice Header -->
-    <h3>Invoice Details</h3>
-    <div class="card">
+    <h3 class="fw-bold">Invoice Details</h3>
+    <div class="card mb-4">
         <div class="card-body">
             <p><strong>Invoice ID:</strong> @Model.Invoice.InvoiceId</p>
             <p><strong>Customer Name:</strong> @Model.Invoice.CustomerName</p>
@@ -12,55 +12,67 @@
         </div>
     </div>
 
-    <!-- Invoice Details -->
+    <!-- Invoice Details Table -->
     <h5 class="mt-4">Products</h5>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var detail in Model.InvoiceDetails)
-            {
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
                 <tr>
-                    <td>@detail.ProductId</td>
-                    <td>@detail.Quantity</td>
-                    <td>@detail.UnitPrice.ToString("C")</td>
-                    <td>@(detail.Quantity * detail.UnitPrice).ToString("C")</td>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model.InvoiceDetails)
+                {
+                        <tr>
+                            <td>@detail.ProductId</td>
+                            <td>@detail.Quantity</td>
+                            <td>@detail.UnitPrice.ToString("C")</td>
+                            <td>@(detail.Quantity * detail.UnitPrice).ToString("C")</td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-    <!-- Add Detail Form -->
+    <!-- Add Product Form -->
     <h5>Add Product</h5>
     <form asp-action="AddDetail" method="post">
         <!-- Pass InvoiceId correctly -->
         <input type="hidden" name="InvoiceId" value="@Model.Invoice.InvoiceId" />
 
-        <div class="form-group">
-            <label for="ProductId">Product</label>
-            <select asp-for="ProductId" asp-items="Model.Products" class="form-control">
+        <div class="mb-3">
+            <label for="ProductId" class="form-label">Product</label>
+            <select asp-for="ProductId" asp-items="Model.Products" class="form-select">
                 <option value="">Select a product</option> <!-- Default option -->
             </select>
             <span asp-validation-for="ProductId" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Quantity" class="control-label"></label>
-            <input asp-for="Quantity" class="form-control" />
+        <div class="mb-3">
+            <label asp-for="Quantity" class="form-label">Quantity</label>
+            <input asp-for="Quantity" class="form-control" type="number" min="1" />
             <span asp-validation-for="Quantity" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="UnitPrice" class="control-label"></label>
-            <input asp-for="UnitPrice" class="form-control" />
+        <div class="mb-3">
+            <label asp-for="UnitPrice" class="form-label">Unit Price</label>
+            <input asp-for="UnitPrice" class="form-control" type="number" step="0.01" />
             <span asp-validation-for="UnitPrice" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-success">Add Product</button>
     </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
