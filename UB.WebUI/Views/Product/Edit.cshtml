@@ -1,12 +1,12 @@
 ﻿@using UB.DLL.Model;
-@model Mdl_Config_Product
+@model Products
 
 <div class="container my-4">
     <h2 class="fw-bold">Edit Product</h2>
 
     <!-- Edit Product Form -->
     <form method="post">
-        <input type="hidden" name="ProductId" value="@Model.ProductId" />
+        <input type="hidden" name="Id" value="@Model.Id" />
 
         <!-- Product Name -->
         <div class="form-group mb-3">
@@ -15,12 +15,7 @@
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
-        <!-- Product Description -->
-        <div class="form-group mb-3">
-            <label for="Description">Description</label>
-            <input type="text" class="form-control" id="Description" name="Description" value="@Model?.Description" />
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
+      
 
         <!-- Product Price -->
         <div class="form-group mb-3">
@@ -29,10 +24,16 @@
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
 
+        <div class="form-group mb-3">
+            <label for="Quantity">Quantity</label>
+            <input type="number" step="0.01" class="form-control" id="Quantity" name="Quantity" value="@Model?.Quantity" required />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+
         <!-- Action Buttons -->
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary">Save Changes</button>
-            <a class="btn btn-secondary" href="/Setup_Product">Cancel</a>
+            <a class="btn btn-secondary" href="/Product">Cancel</a>
         </div>
     </form>
 </div>

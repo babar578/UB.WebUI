@@ -10,10 +10,10 @@ namespace UB.BLL.Repositories.Interface.IProduct
     public interface ISetup_Product
     {
 
-        Task<IEnumerable<Mdl_Config_Product>> GetAllAsync();
-        Task<Mdl_Config_Product> GetByIdAsync(long id);
-        Task<Mdl_Config_Product> AddAsync(Mdl_Config_Product model);
-        Task<Mdl_Config_Product> UpdateAsync(Mdl_Config_Product model);
+        Task<IEnumerable<Products>> GetAllAsync();
+    Task<Products> GetByIdAsync(long Id);
+        Task<Products> AddAsync(Products model);
+        Task<Products> UpdateAsync(Products model);
         Task<int> DeleteAsync(long id);
     }
 }

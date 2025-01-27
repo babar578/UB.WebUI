@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using UB.BLL.Repositories.Interface.IProduct;
 using UB.DLL.Model;
-using System.Threading.Tasks;
 
 namespace UB.WebUI.Controllers
 {
-    public class Setup_ProductController : Controller
+    public class ProductController : Controller
     {
+
         private readonly ISetup_Product _productRepository;
 
-        public Setup_ProductController(ISetup_Product productRepository)
+        public ProductController(ISetup_Product productRepository)
         {
             _productRepository = productRepository;
         }
 
-        // GET: /Product
+
         public async Task<IActionResult> Index()
         {
             var products = await _productRepository.GetAllAsync();
             return View(products); // Corresponds to a Razor View: Index.cshtml
         }
 
-        // GET: /Product/Create
         public IActionResult Create()
         {
             return View(); // Corresponds to Create.cshtml
@@ -30,7 +30,7 @@ namespace UB.WebUI.Controllers
         // POST: /Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Mdl_Config_Product product)
+        public async Task<IActionResult> Create(DLL.Model.Products product)
         {
             if (ModelState.IsValid)
             {
@@ -48,13 +48,13 @@ namespace UB.WebUI.Controllers
             {
                 return NotFound();
             }
-            return View(product); 
+            return View(product);
         }
 
         // POST: /Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Mdl_Config_Product product)
+        public async Task<IActionResult> Edit(DLL.Model.Products product)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace UB.WebUI.Controllers
         // GET: /Product/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _productRepository.GetByIdAsync(id);
+           var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -83,16 +83,35 @@ namespace UB.WebUI.Controllers
             await _productRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
-
-        // GET: /Product/Details/5
-        public async Task<IActionResult> Details(int id)
+        [HttpGet]
+        public async Task<IActionResult> DownloadCsv()
         {
-            var product = await _productRepository.GetByIdAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product); // Corresponds to Details.cshtml
+            // Fetch data asynchronously
+            var products = await _productRepository.GetAllAsync();
+
+            // Generate CSV content
+            var csvContent = GenerateCsv(products);
+
+            // Convert to byte array
+            var fileBytes = Encoding.UTF8.GetBytes(csvContent);
+
+            // Return file with proper MIME type and filename
+            return File(fileBytes, "text/csv", "products.csv");
         }
+
+        // Helper method to generate CSV content
+        private string GenerateCsv(IEnumerable<Products> products)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Id,Name,Price,Quantity"); // Header row
+
+            foreach (var product in products)
+            {
+                sb.AppendLine($"{product.Id},{product.Name},{product.Price},{product.Quantity}");
+            }
+
+            return sb.ToString();
+        }
+
     }
 }

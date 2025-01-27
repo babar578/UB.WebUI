@@ -1,5 +1,5 @@
 ﻿@using UB.DLL.Model;
-@model Mdl_Config_Product
+@model Products
 
 <div class="container my-4">
     <h2 class="fw-bold">Product Details</h2>
@@ -8,7 +8,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <p><strong>Product Name:</strong> @Model.Name</p>
-            <p><strong>Description:</strong> @Model.Description</p>
+
             <p><strong>Price:</strong> @Model.Price.ToString("C")</p> <!-- Formatted Price -->
         </div>
     </div>

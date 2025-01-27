@@ -9,6 +9,7 @@ using UB.BLL.Repositories.Interface.IProduct;
 using UB.DLL.Model;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using System.Net.NetworkInformation;
 
 namespace UB.BLL.Repositories.Service.Product
 {
@@ -26,83 +27,105 @@ namespace UB.BLL.Repositories.Service.Product
                 ?? throw new ArgumentNullException(nameof(configuration), "Connection string cannot be null");
         }
         #endregion
-
-        #region "Methods"
-        public async Task<IEnumerable<Mdl_Config_Product>> GetAllAsync()
+        public async Task<IEnumerable<Products>> GetAllAsync()
         {
-            const string query =
-                @"
-                SELECT *
-                FROM Mdl_Config_Product
-                ";
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                return await connection.QueryAsync<Products>("sp_GetAllProducts", commandType: CommandType.StoredProcedure);
+            }
+            catch (SqlException ex)
+            {
+                // Log the exception or handle it as needed
+                throw new Exception("An error occurred while retrieving all products", ex);
+            }
+        }
+        public async Task<Products> GetByIdAsync(long id)
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                var product = await connection.QueryFirstOrDefaultAsync<Products>(
+                    "GetProductById",
+                    new { Id = id },
+                    commandType: CommandType.StoredProcedure
+                );
 
-            using var connection = Connection;
-            var result = await connection.QueryAsync<Mdl_Config_Product>(query);
-            return result;
+                if (product == null)
+                {
+                    throw new Exception("Product not found.");
+                }
+
+                return product;
+            }
+            catch (SqlException ex)
+            {
+                // Log the exception or handle it as needed
+                throw new Exception("An error occurred while retrieving the product", ex);
+            }
         }
 
-        public async Task<Mdl_Config_Product> GetByIdAsync(long id)
-        {
-            const string query =
-                @"
-                SELECT *
-                FROM Mdl_Config_Product
-                WHERE ProductId = @ProductId
-                ";
 
-            using var connection = Connection;
-            var result = await connection.QueryFirstOrDefaultAsync<Mdl_Config_Product>(query, new { ProductId = id });
-            return result ?? throw new KeyNotFoundException("No record found.");
+        public async Task<Products> AddAsync(Products product)
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                var result = await connection.ExecuteAsync("sp_InsertProduct", new { product.Name, product.Price, product.Quantity }, commandType: CommandType.StoredProcedure);
+                if (result > 0)
+                {
+                    return product; // Assuming the product is added successfully
+                }
+                else
+                {
+                    throw new Exception("Failed to add product.");
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Log the exception or handle it as needed
+                throw new Exception("An error occurred while adding the product", ex);
+            }
         }
 
-        public async Task<Mdl_Config_Product> AddAsync(Mdl_Config_Product model)
+        public async Task<Products> UpdateAsync(Products product)
         {
-            const string query =
-                 @"
-        INSERT INTO Mdl_Config_Product (
-            Name, Description, Price
-        )
-        OUTPUT INSERTED.*
-        VALUES (
-            @Name, @Description, @Price
-        )
-        ";
-
-            using var connection = Connection;
-            var result = await connection.QueryFirstOrDefaultAsync<Mdl_Config_Product>(query, model);
-            return result ?? throw new InvalidOperationException("Failed to insert the new record.");
-        }
-
-        public async Task<Mdl_Config_Product> UpdateAsync(Mdl_Config_Product model)
-        {
-            const string query =
-                @"
-                UPDATE Mdl_Config_Product
-                SET Name = @Name,
-                    Description = @Description,
-                    Price = @Price
-                OUTPUT INSERTED.*
-                WHERE ProductId = @ProductId
-                ";
-
-            using var connection = Connection;
-            var updatedRecord = await connection.QueryFirstOrDefaultAsync<Mdl_Config_Product>(query, model);
-            return updatedRecord ?? throw new InvalidOperationException("Failed to update the record.");
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                var result = await connection.ExecuteAsync("sp_UpdateProduct", product, commandType: CommandType.StoredProcedure);
+                if (result > 0)
+                {
+                    return product; // Assuming the product is updated successfully
+                }
+                else
+                {
+                    throw new Exception("Failed to update product.");
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Log the exception or handle it as needed
+                throw new Exception("An error occurred while updating the product", ex);
+            }
         }
 
         public async Task<int> DeleteAsync(long id)
         {
-            const string query =
-                @"
-                DELETE FROM Mdl_Config_Product
-                WHERE ProductId = @ProductId
-                ";
-
-            using var connection = Connection;
-            var result = await connection.ExecuteAsync(query, new { ProductId = id });
-            return (result > 0) ? result : throw new InvalidOperationException("Failed to delete the record.");
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                var result = await connection.ExecuteAsync("sp_DeleteProduct", new { Id = id }, commandType: CommandType.StoredProcedure);
+                return result; // Returns the number of rows affected
+            }
+            catch (SqlException ex)
+            {
+                // Log the exception or handle it as needed
+                throw new Exception("An error occurred while deleting the product", ex);
+            }
         }
-        #endregion
+
+
 
     }
 }

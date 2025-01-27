@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - UB.WebUI</title>
+    <title>@ViewData["Title"] - Test.WebUI</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/UB.WebUI.styles.css" asp-append-version="true" />
@@ -61,10 +61,10 @@
             <a href="#" class="text-white text-decoration-none">UB.WebUI</a>
         </div>
         <nav class="nav flex-column">
-            <a class="nav-link @((ViewData["Title"]?.ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-            <a class="nav-link @((ViewData["Title"]?.ToString() == "Product") ? "active" : "")" asp-area="" asp-controller="Setup_Product" asp-action="Index">Product</a>
-            <a class="nav-link @((ViewData["Title"]?.ToString() == "Invoice") ? "active" : "")" asp-area="" asp-controller="Invoice" asp-action="Index">Invoice</a>
-            <a class="nav-link" href="#">Advanced Theme</a>
+
+            <a class="nav-link @((ViewData["Title"]?.ToString() == "Product") ? "active" : "")" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+           
+          
         </nav>
     </div>
 
