@@ -60,7 +60,7 @@ namespace UB.BLL.Repositories.Service.Product
             }
             catch (SqlException ex)
             {
-                // Log the exception or handle it as needed
+                
                 throw new Exception("An error occurred while retrieving the product", ex);
             }
         }
@@ -74,7 +74,7 @@ namespace UB.BLL.Repositories.Service.Product
                 var result = await connection.ExecuteAsync("sp_InsertProduct", new { product.Name, product.Price, product.Quantity }, commandType: CommandType.StoredProcedure);
                 if (result > 0)
                 {
-                    return product; // Assuming the product is added successfully
+                    return product; 
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace UB.BLL.Repositories.Service.Product
             }
             catch (SqlException ex)
             {
-                // Log the exception or handle it as needed
+               
                 throw new Exception("An error occurred while adding the product", ex);
             }
         }
@@ -96,7 +96,7 @@ namespace UB.BLL.Repositories.Service.Product
                 var result = await connection.ExecuteAsync("sp_UpdateProduct", product, commandType: CommandType.StoredProcedure);
                 if (result > 0)
                 {
-                    return product; // Assuming the product is updated successfully
+                    return product; 
                 }
                 else
                 {
@@ -105,7 +105,7 @@ namespace UB.BLL.Repositories.Service.Product
             }
             catch (SqlException ex)
             {
-                // Log the exception or handle it as needed
+                
                 throw new Exception("An error occurred while updating the product", ex);
             }
         }
@@ -116,11 +116,11 @@ namespace UB.BLL.Repositories.Service.Product
             {
                 using var connection = new SqlConnection(_connectionString);
                 var result = await connection.ExecuteAsync("sp_DeleteProduct", new { Id = id }, commandType: CommandType.StoredProcedure);
-                return result; // Returns the number of rows affected
+                return result; 
             }
             catch (SqlException ex)
             {
-                // Log the exception or handle it as needed
+                
                 throw new Exception("An error occurred while deleting the product", ex);
             }
         }

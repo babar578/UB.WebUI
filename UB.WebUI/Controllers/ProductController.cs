@@ -19,15 +19,15 @@ namespace UB.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var products = await _productRepository.GetAllAsync();
-            return View(products); // Corresponds to a Razor View: Index.cshtml
+            return View(products); 
         }
 
         public IActionResult Create()
         {
-            return View(); // Corresponds to Create.cshtml
+            return View(); 
         }
 
-        // POST: /Product/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DLL.Model.Products product)
@@ -40,7 +40,7 @@ namespace UB.WebUI.Controllers
             return View(product);
         }
 
-        // GET: /Product/Edit/5
+        
         public async Task<IActionResult> Edit(int id)
         {
             var product = await _productRepository.GetByIdAsync(id);
@@ -51,7 +51,7 @@ namespace UB.WebUI.Controllers
             return View(product);
         }
 
-        // POST: /Product/Edit/5
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(DLL.Model.Products product)
@@ -64,7 +64,7 @@ namespace UB.WebUI.Controllers
             return View(product);
         }
 
-        // GET: /Product/Delete/5
+        
         public async Task<IActionResult> Delete(int id)
         {
            var product = await _productRepository.GetByIdAsync(id);
@@ -72,10 +72,10 @@ namespace UB.WebUI.Controllers
             {
                 return NotFound();
             }
-            return View(product); // Corresponds to Delete.cshtml
+            return View(product); 
         }
 
-        // POST: /Product/Delete/5
+        
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -86,24 +86,23 @@ namespace UB.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> DownloadCsv()
         {
-            // Fetch data asynchronously
+            
             var products = await _productRepository.GetAllAsync();
 
-            // Generate CSV content
+         
             var csvContent = GenerateCsv(products);
 
-            // Convert to byte array
+         
             var fileBytes = Encoding.UTF8.GetBytes(csvContent);
 
-            // Return file with proper MIME type and filename
+         
             return File(fileBytes, "text/csv", "products.csv");
         }
 
-        // Helper method to generate CSV content
         private string GenerateCsv(IEnumerable<Products> products)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("Id,Name,Price,Quantity"); // Header row
+            sb.AppendLine("Id,Name,Price,Quantity"); 
 
             foreach (var product in products)
             {
